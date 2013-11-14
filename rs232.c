@@ -29,30 +29,29 @@
 ***************************************************************************
 */
 
-
-
 #include "rs232.h"
 
-HANDLE Cport[16];
+HANDLE Cport[100]; //Changed from 16 to 100
 COMMTIMEOUTS Cptimeouts;
 DCB port_settings;
-
-char comports[16][10]={"\\\\.\\COM1",  "\\\\.\\COM2",  "\\\\.\\COM3",  "\\\\.\\COM4",
+// Change the ports here according to Port Number
+char comports[20][10]={"\\\\.\\COM1",  "\\\\.\\COM2",  "\\\\.\\COM3",  "\\\\.\\COM4",
                        "\\\\.\\COM5",  "\\\\.\\COM6",  "\\\\.\\COM7",  "\\\\.\\COM8",
                        "\\\\.\\COM9",  "\\\\.\\COM10", "\\\\.\\COM11", "\\\\.\\COM12",
-                       "\\\\.\\COM13", "\\\\.\\COM14", "\\\\.\\COM15", "\\\\.\\COM16"};
+                       "\\\\.\\COM13", "\\\\.\\COM14", "\\\\.\\COM15", "\\\\.\\COM16",
+					   "\\\\.\\COM17",  "\\\\.\\COM18", "\\\\.\\COM19", "\\\\.\\COM20"};
 
 char baudr[64];
-
 
 int RS232_OpenComport(int comport_number, int baudrate)
 {
 	
-  if((comport_number>15)||(comport_number<0))
-  {
+ // if((comport_number>15)||(comport_number<0))
+  if(comport_number<0)	
+	{
     printf("illegal comport number\n");
     return(1);
-  }
+	}
 
   switch(baudrate)
   {
@@ -165,7 +164,7 @@ int SendByte(int comport_number, unsigned char byte)
 }
 
 
-int SendBuf(int comport_number, unsigned char *buf, int size)
+int RS232_SendBuf(int comport_number, unsigned char *buf, int size)
 {
   int n;
 
